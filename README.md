@@ -28,6 +28,18 @@ The UI is at `http://localhost:8080/` and health is at `http://localhost:8080/ap
 docker compose --profile indexer run --rm indexer
 ```
 
+When running the backend directly instead of through Compose, first build the
+frontend into the backend's static directory:
+
+```shell
+cd core/frontend && npm ci && npm run buildlocal
+cd ../backend && uv sync && uv run python app.py
+```
+
+Running only `core/backend/app.py` without `npm run buildlocal` serves a
+placeholder page at port 8080. For frontend-only hot reload, use `npm run dev`
+and open `http://localhost:8082/`.
+
 For component checks:
 
 ```shell

@@ -21,3 +21,5 @@ def test_static_index():
     response = client.get("/")
     assert response.status_code == 200
     assert "text/html" in response.headers["content-type"]
+    assert "<dlf-search-webcomponent>" in response.text
+    assert "Build the frontend or run the core container" not in response.text

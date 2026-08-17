@@ -122,10 +122,35 @@ async function ensureMdeStylesheet() {
   }
 }
 
+async function generateIndexHtml() {
+  const indexUrl = new URL("index.html", distDir);
+  const html = `<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/src/favicon.ico" />
+    <link rel="stylesheet" href="/assets/mde-style.css" />
+    <title>Dienstleistungsfinder</title>
+    <script type="module" src="/loader.js"></script>
+  </head>
+  <body style="margin: 0; padding: 0">
+    <noscript>
+      <strong>JavaScript muss aktiviert sein, um diese Anwendung zu verwenden.</strong>
+    </noscript>
+    <dlf-search-webcomponent></dlf-search-webcomponent>
+  </body>
+</html>
+`;
+
+  await fs.writeFile(indexUrl, html, "utf8");
+}
+
 async function main() {
   const manifest = await loadManifest();
   await generateWebcomponentLoader(manifest);
   await ensureMdeStylesheet();
+  await generateIndexHtml();
 }
 
 await main();
