@@ -1,0 +1,52 @@
+name: Core CI
+on:
+  push:
+    paths: ["core/**", ".github/workflows/core-ci.yml"]
+  pull_request:
+    paths: ["core/**", ".github/workflows/core-ci.yml"]
+permissions:
+  contents: read
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    env:
+      DLF_SESSION_SECRET: test-session-secret
+      LANGFUSE_PUBLIC_KEY: test-public
+      LANGFUSE_SECRET_KEY: test-secret
+      LANGFUSE_HOST: https://langfuse.example.invalid
+    defaults:
+      run:
+        working-directory: core/backend
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: astral-sh/setup-uv@6b9c6063abd6010835644d4c2e1bef4cf5cd0fca # v6.0.1
+        with:
+          enable-cache: true
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run python -c "import app"
+      - run: uv run pytest
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: core/frontend
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@1e60f620b9541dca151540d0c4e2b4b20a8aa7c8 # v4.0.3
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: core/frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+      - uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6.18.0
+        with:
+          context: core
+          push: false
