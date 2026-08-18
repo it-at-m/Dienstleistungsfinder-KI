@@ -3,5 +3,8 @@
   "extends": [
     "config:recommended",
     "schedule:monthly"
+  ],
+  "reviewers": [
+    "Illuminate97"
   ]
 }
