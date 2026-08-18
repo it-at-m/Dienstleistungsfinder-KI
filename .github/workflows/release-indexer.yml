@@ -1,0 +1,33 @@
+name: Release indexer image
+on:
+  push:
+    tags: ["indexer-v*.*.*"]
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+  attestations: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+      - id: version
+        shell: bash
+        run: echo "value=${GITHUB_REF_NAME#indexer-v}" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6.18.0
+        with:
+          context: indexer
+          push: true
+          tags: |
+            ghcr.io/it-at-m/dienstleistungsfinder-ki-indexer:${{ steps.version.outputs.value }}
+            ghcr.io/it-at-m/dienstleistungsfinder-ki-indexer:sha-${{ github.sha }}
+          sbom: true
+          provenance: mode=max
+

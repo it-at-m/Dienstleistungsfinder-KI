@@ -1,0 +1,42 @@
+[project]
+name = "dlf-backend"
+version = "0.1.0"
+description = "KI Suche der stadt MÃ¼nchen"
+readme = "README.md"
+authors = [
+    { name = "Fabian Reinold", email = "fabian.reinold@muenchen.de" },
+    { name = "Michael Jaumann", email = "michael.jaumann@muenchen.de" },
+    { name = "Leon Lukas", email = "leon.lukas@muenchen.de" },
+    { name = "Sebastian Berger", email = "sebastian.berger@muenchen.de" },
+]
+maintainers = [
+    { name = "Fabian Reinold", email = "fabian.reinold@muenchen.de" },
+    { name = "Michael Jaumann", email = "michael.jaumann@muenchen.de" },
+    { name = "Leon Lukas", email = "leon.lukas@muenchen.de" },
+]
+requires-python = "==3.13.11"
+dependencies = [
+    "fastapi==0.136.3",
+    "gitpython==3.1.59",
+    "itsdangerous==2.2.0",
+    "langchain-openai==1.2.2",
+    "langchain-qdrant==1.1.0",
+    "langchain==1.3.2",
+    "langfuse==4.6.1",
+    "python-dotenv==1.2.2",
+    "starlette==1.1.0",
+    "qdrant-client[fastembed]==1.18.0",
+    "truststore==0.10.4",
+    "uvicorn==0.48.0",
+    "pyyaml==6.0.3",
+    "aiosmtplib==5.1.0",
+    "cohere==6.1.0",
+]
+
+[dependency-groups]
+dev = ["ipykernel==7.2.0", "pre-commit==4.6.0", "pytest==9.1.1", "ruff==0.15.14"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
