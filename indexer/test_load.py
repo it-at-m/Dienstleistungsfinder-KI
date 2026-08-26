@@ -1,6 +1,7 @@
+from uuid import uuid4
+
 from dotenv import load_dotenv
 from langchain_core.documents.base import Document
-from uuid import uuid4
 
 from src.load import load
 
