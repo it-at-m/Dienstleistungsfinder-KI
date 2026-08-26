@@ -116,6 +116,7 @@ def _extract_keywords(data: dict, article_id: int) -> tuple[list[str], dict[str,
         return exsisting_keywords, category_dict
 
     article_keywords: KeywordResult = generate_article_keywords(
+        model_name=os.getenv("OPENAI_CHAT_MODEL", "gpt-4.1-mini"),
         title=data.get("name", ""),
         description=data.get("description", ""),
         allowed_categories=categories,
