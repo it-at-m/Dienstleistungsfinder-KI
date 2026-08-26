@@ -1,6 +1,8 @@
 # ruff: noqa: E402 (no import at top level) suppressed on this file as we need to inject the truststore before importing the other modules
 from truststore import inject_into_ssl  # noqa
 
+import re
+
 inject_into_ssl()  # noqa
 
 import datetime as dt
@@ -30,6 +32,15 @@ from src.logtools import getLogger
 from src.utils import build_collection_content_hash_map, extract_modified_and_new_docs
 
 logger = getLogger()
+
+
+def _snapshot_creation_time(snapshot_name: str) -> dt.datetime | None:
+    """Returns the creation time of a snapshot as a datetime object."""
+    m = re.search(r"\b(\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2})\b", snapshot_name)
+    if not m:
+        return None
+    logger.debug(f"Extracted creation time string: {m.group(1)}")
+    return dt.datetime.strptime(m.group(1), "%Y-%m-%d-%H-%M-%S")
 
 
 def _split_equal_chunks(lst: list[Any], chunk_size: int) -> list[list[Any]] | None:
@@ -140,24 +151,32 @@ def _build_vectorstore(
 
         # List all exisiting snapshots and sort them by creation time
         snapshots: list[SnapshotDescription] = qdrant_client.list_snapshots(COLLECTION_NAME)
-        latest_snapshot_time = dt.datetime.now(dt.timezone.utc)
         if len(snapshots) == 0:
             logger.info("No snapshots found, creating a new snapshot")
             create_snapshot = True
         else:
-            sorted_snapshots = sorted(
-                snapshots, key=lambda snapshot: snapshot.creation_time if snapshot.creation_time else "", reverse=True
-            )
+            try:
+                sorted_snapshots = sorted(
+                    snapshots,
+                    key=lambda snapshot: snapshot.creation_time or dt.datetime.min,
+                    reverse=True,
+                )
+                latest_snapshot_time = dt.datetime.fromisoformat(sorted_snapshots[0].creation_time + "Z")  # type: ignore
+            except Exception as e:
+                logger.warning(f"Failed to log snapshot creation details: {e}; falling back to regex-based sorting")
+                sorted_snapshots = sorted(
+                    snapshots,
+                    key=lambda snapshot: _snapshot_creation_time(snapshot.name) or dt.datetime.min,
+                    reverse=True,
+                )
+                latest_snapshot_time = dt.datetime.fromisoformat(_snapshot_creation_time(sorted_snapshots[0]) + "Z")  # type: ignore
 
             # Check if we have to make a new snapshot (latest one is older than 12 hours)
-            latest_snapshot: SnapshotDescription = sorted_snapshots[0]
-            if latest_snapshot is not None:
-                # Add Z to parse to UTC automatically (Qdrant always returns UTC time)
-                latest_snapshot_time = dt.datetime.fromisoformat(latest_snapshot.creation_time + "Z")  # type: ignore
-
             # Calculate time difference between current time and latest snapshot time
             time_difference: dt.timedelta = dt.datetime.now(dt.timezone.utc) - latest_snapshot_time
-
+            logger.debug(
+                f"Latest snapshot time: {latest_snapshot_time}, Current time: {dt.datetime.now(dt.timezone.utc)}, Time difference: {time_difference}"
+            )
             if time_difference < dt.timedelta(hours=12):
                 logger.info("Latest snapshot is less than 12 hours old, skipping snapshot creation")
             else:

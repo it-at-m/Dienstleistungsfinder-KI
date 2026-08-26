@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
+    "@emnapi/runtime": "1.11.3",
     "@muenchen/prettier-codeformat": "1.0.2",
     "@tsconfig/node-lts": "24.0.0",
     "@types/markdown-it": "14.1.2",
