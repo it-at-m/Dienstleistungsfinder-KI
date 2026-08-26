@@ -43,7 +43,7 @@ KEYWORD_PROMPT = ChatPromptTemplate.from_messages(
 
 
 def make_keyword_chain(
-    model_name: str = "gpt-4o-mini",
+    model_name: str = "gpt-4.1-mini",
     temperature: float = 0.2,
 ):
     llm = ChatOpenAI(model=model_name, temperature=temperature).with_structured_output(KeywordResult)
@@ -56,7 +56,7 @@ def generate_article_keywords(
     n: int = 5,
     language: str = "de",
     allowed_categories: list[str] | None = None,
-    model_name: str = "gpt-4o-mini",
+    model_name: str = "gpt-4.1-mini",
     temperature: float = 0.2,
 ) -> KeywordResult:
     """
