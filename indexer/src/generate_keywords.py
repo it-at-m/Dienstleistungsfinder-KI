@@ -51,12 +51,12 @@ def make_keyword_chain(
 
 
 def generate_article_keywords(
+    model_name: str,
     title: str,
     description: str,
     n: int = 5,
     language: str = "de",
     allowed_categories: list[str] | None = None,
-    model_name: str,
     temperature: float = 0.2,
 ) -> KeywordResult:
     """
@@ -76,7 +76,7 @@ def generate_article_keywords(
                 "allowed_categories": allowed_str,
                 "n": n,
             }
-        )  # type: ignore
+        )
     except Exception as e:
         logger.error(f"Error occurred while classifying article categories: {e}")
         result = KeywordResult(keywords=[])
