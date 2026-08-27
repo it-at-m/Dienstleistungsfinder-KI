@@ -2,8 +2,8 @@ import os
 import re
 from collections.abc import Iterable
 
-import requests
 from dotenv import load_dotenv
+from httpx import Client, HTTPError
 from qdrant_client import QdrantClient
 from truststore import inject_into_ssl
 
@@ -58,10 +58,11 @@ def fetch_etracker_report() -> list:
     }
 
     try:
-        resp = requests.get(url, headers={token_name: ETRACKER_TOKEN}, params=request_params, timeout=60)
-        resp.raise_for_status()
-        return resp.json()
-    except requests.RequestException as e:
+        with Client(proxy=os.getenv("HTTPS_PROXY"), follow_redirects=True) as client:
+            response = client.get(url, headers={token_name: ETRACKER_TOKEN}, params=request_params, timeout=60)
+            response.raise_for_status()
+            return response.json()
+    except HTTPError as e:
         print(f"Etracker request failed: {e}")
         raise
 
@@ -70,11 +71,12 @@ def fetch_valid_api_ids() -> set[str]:
     """Fetches valid Service IDs from the internal API."""
     try:
         auth = (API_AUTH_USER, API_AUTH_PASS) if API_AUTH_USER and API_AUTH_PASS else None
-        response = requests.get(API_IDS_URL, auth=auth, timeout=30)
-        response.raise_for_status()
-        ids_dict = response.json()
-        return {str(item["id"]) for item in ids_dict["ids"]}
-    except requests.RequestException as e:
+        with Client(proxy=os.getenv("HTTPS_PROXY"), follow_redirects=True) as client:
+            response = client.get(API_IDS_URL, auth=auth, timeout=30)
+            response.raise_for_status()
+            ids_dict = response.json()
+            return {str(item["id"]) for item in ids_dict["ids"]}
+    except HTTPError as e:
         print(f"API IDs request failed: {e}")
         raise
 
@@ -269,7 +271,9 @@ def add_site_visits_to_qdrant_collection(
             src = md.get("source")
 
             if not isinstance(src, str) or not src:
-                logger.warning(f"Point ID {point.id} in collection '{collection_name}' has no valid source URL; skipping.")
+                logger.warning(
+                    f"Point ID {point.id} in collection '{collection_name}' has no valid source URL; skipping."
+                )
                 continue
 
             visits = int(matched_visits_by_url.get(src, 0))
@@ -283,7 +287,7 @@ def add_site_visits_to_qdrant_collection(
                 "endDate": end_date,
             }
 
-            pending.append((point.id, {"metadata": new_md})) # type: ignore
+            pending.append((point.id, {"metadata": new_md}))  # type: ignore
 
         # Flush pending updates in batches
         if pending:
@@ -347,5 +351,3 @@ def add_site_visits_main() -> None:
 
     except Exception as e:
         print(f"An error occurred: {e}")
-
-
