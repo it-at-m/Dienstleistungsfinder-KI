@@ -16,8 +16,7 @@ export interface RetrievedDocumentFull extends RetrievedDocumentBase {
 }
 
 export type RetrievedDocument =
-  | RetrievedDocumentMinimal
-  | RetrievedDocumentFull;
+  RetrievedDocumentMinimal | RetrievedDocumentFull;
 
 export interface EnhancedQuery {
   query: string;
