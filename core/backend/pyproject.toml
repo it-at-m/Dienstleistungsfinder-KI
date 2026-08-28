@@ -29,7 +29,7 @@ dependencies = [
     "uvicorn==0.52.4",
     "pyyaml==6.0.3",
     "aiosmtplib==5.1.2",
-    "cohere==6.1.0",
+    "cohere==7.1.0",
 ]
 
 [dependency-groups]
