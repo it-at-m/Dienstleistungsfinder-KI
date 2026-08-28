@@ -88,7 +88,7 @@ def _build_chat_model(temperature: float | None = None) -> ChatOpenAI:
         ChatOpenAI: An instance of ChatOpenAI.
 
     Corresponding Environment Variables:
-        OPENAI_CHAT_MODEL: The LLM that is deployed, e.g gpt-4o-mini.
+        OPENAI_CHAT_MODEL: The LLM that is deployed, e.g gpt-4.1-mini.
         OPENAI_API_KEY: The API key for the OpenAI API.
         OPENAI_API_BASE: Base URL of the LiteLLM Proxy
         OPENAI_API_VERSION: Version of the openAI API (e.g. 2024-08-01-preview or later for structured output support)
@@ -102,8 +102,8 @@ def _build_chat_model(temperature: float | None = None) -> ChatOpenAI:
     MAX_RETRIES: int = int(getenv("LLM_MAX_RETRIES", 2))
 
     if MODEL is None:
-        MODEL = "gpt-4o-mini"  # Default to a reasonable model if not set
-        logger.warning("OPENAI_CHAT_MODEL not set, defaulting to gpt-4o-mini.")
+        MODEL = "gpt-4.1-mini"  # Default to a reasonable model if not set
+        logger.warning("OPENAI_CHAT_MODEL not set, defaulting to gpt-4.1-mini.")
 
     return ChatOpenAI(model=MODEL, temperature=TEMPERATURE, timeout=TIMEOUT, max_retries=MAX_RETRIES)
 
