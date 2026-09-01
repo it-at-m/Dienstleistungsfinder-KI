@@ -20,13 +20,13 @@ cp indexer/.env.example indexer/.env
 
 Die Vorlagen sind bewusst minimal. Der Backend-Code prüft beim Start zusätzlich folgende Werte:
 
-| Variable | Zweck |
-| --- | --- |
-| `DLF_SESSION_SECRET` | Signiert Browser-Session-Cookies |
-| `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_HOST` | Prompt-Laden, Tracing und Feedback |
-| `OPENAI_API_KEY`, `OPENAI_API_BASE` | Zugriff auf Chat-, Embedding- und Reranking-API |
-| `OPENAI_CHAT_MODEL`, `OPENAI_EMBEDDING_MODEL` | Auswahl der Laufzeitmodelle |
-| `QDRANT_URL` | Endpunkt der Vektordatenbank; Compose überschreibt ihn mit `http://qdrant:6333` |
+| Variable                                                      | Zweck                                                                           |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `DLF_SESSION_SECRET`                                          | Signiert Browser-Session-Cookies                                                |
+| `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_HOST` | Prompt-Laden, Tracing und Feedback                                              |
+| `OPENAI_API_KEY`, `OPENAI_API_BASE`                           | Zugriff auf Chat-, Embedding- und Reranking-API                                 |
+| `OPENAI_CHAT_MODEL`, `OPENAI_EMBEDDING_MODEL`                 | Auswahl der Laufzeitmodelle                                                     |
+| `QDRANT_URL`                                                  | Endpunkt der Vektordatenbank; Compose überschreibt ihn mit `http://qdrant:6333` |
 
 Wenn die Plattform einen reinen Lesezugang bereitstellt, sollte der Core `QDRANT_READONLY_API_KEY` verwenden. Der Indexer benötigt `QDRANT_API_KEY` mit Schreibrechten für Collections und Points.
 
@@ -109,11 +109,11 @@ Die Entwicklungs-URL lautet normalerweise `http://localhost:5173`. Der Produktio
 
 ## Häufige Fehler
 
-| Symptom | Wahrscheinliche Ursache |
-| --- | --- |
-| Backend beendet sich beim Import | Eine erforderliche Session- oder Langfuse-Variable fehlt |
+| Symptom                                      | Wahrscheinliche Ursache                                                                  |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Backend beendet sich beim Import             | Eine erforderliche Session- oder Langfuse-Variable fehlt                                 |
 | Backend startet, aber Retrieval schlägt fehl | Collections sind leer, Zugangsdaten falsch oder Vektorkonfigurationen unterscheiden sich |
-| Nur eine Platzhalterseite erscheint | Das Frontend wurde nicht mit `npm run buildlocal` gebaut |
-| Indexer endet mit Status 2 | `QDRANT_URL` oder `QDRANT_API_KEY` fehlt |
-| Indexer stoppt nach dem Sammeln | Weniger als `DLF_INDEXER_MIN_ARTICLES` Dienstleistungsartikel wurden geliefert |
-| Browser blockiert Aufrufe | Der Origin fehlt in der kommaseparierten Variable `DLF_ALLOWED_ORIGINS` |
+| Nur eine Platzhalterseite erscheint          | Das Frontend wurde nicht mit `npm run buildlocal` gebaut                                 |
+| Indexer endet mit Status 2                   | `QDRANT_URL` oder `QDRANT_API_KEY` fehlt                                                 |
+| Indexer stoppt nach dem Sammeln              | Weniger als `DLF_INDEXER_MIN_ARTICLES` Dienstleistungsartikel wurden geliefert           |
+| Browser blockiert Aufrufe                    | Der Origin fehlt in der kommaseparierten Variable `DLF_ALLOWED_ORIGINS`                  |
