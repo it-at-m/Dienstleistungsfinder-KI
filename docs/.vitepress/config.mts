@@ -1,6 +1,6 @@
 import { defineConfig } from "vitepress";
 
-const sourceLink = "https://github.com/it-at-m/Dienstleistungsfinder-KI";
+const sourceLink = "https://github.com/it-at-m/dienstleistungsfinder-ki";
 
 export default defineConfig({
   title: "Dienstleistungsfinder KI",
@@ -8,6 +8,7 @@ export default defineConfig({
     "Technical documentation for the AI-supported municipal service search",
   cleanUrls: true,
   lastUpdated: true,
+  base: "/dienstleistungsfinder-ki/",
   head: [["meta", { name: "theme-color", content: "#005a9c" }]],
   locales: {
     root: { label: "English", lang: "en", link: "/" },
