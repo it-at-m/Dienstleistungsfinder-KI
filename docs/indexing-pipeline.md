@@ -15,10 +15,10 @@ Before external collection starts, the process requires `QDRANT_URL` and `QDRANT
 
 `VDB_COLLECTIONS` selects registered builders; the default is `service,info`.
 
-| Collection | Source | Processing |
-| --- | --- | --- |
-| `service` | Munich service APIs | Collect IDs, fetch detailed articles, validate, and normalize structured fields |
-| `info` | Magnolia search API | Fetch information pages and convert them directly to LangChain documents |
+| Collection | Source              | Processing                                                                      |
+| ---------- | ------------------- | ------------------------------------------------------------------------------- |
+| `service`  | Munich service APIs | Collect IDs, fetch detailed articles, validate, and normalize structured fields |
+| `info`     | Magnolia search API | Fetch information pages and convert them directly to LangChain documents        |
 
 The service builder enforces `DLF_INDEXER_MIN_ARTICLES` (default `800`) as a safety guard against replacing a healthy index with a suspiciously incomplete upstream response.
 
@@ -51,16 +51,16 @@ When both `ETRACKER_URL_BASE` and `ETRACKER_TOKEN` are configured, the final sta
 
 ## Essential configuration
 
-| Variable | Default | Meaning |
-| --- | --- | --- |
-| `VDB_COLLECTIONS` | `service,info` | Builders and target collection names |
-| `OPENAI_EMBEDDING_MODEL` | none | Required dense embedding model |
-| `EMB_SPARSE_MODEL` | `Qdrant/bm25` | Sparse embedding model |
-| `VDB_DENSE_VECTOR_NAME` | `dense` | Dense vector slot in Qdrant |
-| `VDB_SPARSE_VECTOR_NAME` | `sparse` | Sparse vector slot in Qdrant |
-| `VDB_BATCH_SIZE` | `25` | Documents per upsert batch |
-| `VDB_MAX_SNAPSHOTS` | `10` | Snapshots retained per collection |
-| `DLF_INDEXER_MIN_ARTICLES` | `800` | Minimum accepted service-article count |
+| Variable                   | Default        | Meaning                                |
+| -------------------------- | -------------- | -------------------------------------- |
+| `VDB_COLLECTIONS`          | `service,info` | Builders and target collection names   |
+| `OPENAI_EMBEDDING_MODEL`   | none           | Required dense embedding model         |
+| `EMB_SPARSE_MODEL`         | `Qdrant/bm25`  | Sparse embedding model                 |
+| `VDB_DENSE_VECTOR_NAME`    | `dense`        | Dense vector slot in Qdrant            |
+| `VDB_SPARSE_VECTOR_NAME`   | `sparse`       | Sparse vector slot in Qdrant           |
+| `VDB_BATCH_SIZE`           | `25`           | Documents per upsert batch             |
+| `VDB_MAX_SNAPSHOTS`        | `10`           | Snapshots retained per collection      |
+| `DLF_INDEXER_MIN_ARTICLES` | `800`          | Minimum accepted service-article count |
 
 ## Failure behavior and recovery
 

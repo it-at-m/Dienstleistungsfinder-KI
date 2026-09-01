@@ -20,13 +20,13 @@ cp indexer/.env.example indexer/.env
 
 The templates are intentionally minimal. The backend code also validates these values during startup:
 
-| Variable | Purpose |
-| --- | --- |
-| `DLF_SESSION_SECRET` | Signs browser session cookies |
-| `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_HOST` | Prompt loading, tracing, and feedback |
-| `OPENAI_API_KEY`, `OPENAI_API_BASE` | Chat, embedding, and reranking API access |
-| `OPENAI_CHAT_MODEL`, `OPENAI_EMBEDDING_MODEL` | Runtime model selection |
-| `QDRANT_URL` | Vector database endpoint; Compose overrides it to `http://qdrant:6333` |
+| Variable                                                      | Purpose                                                                |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `DLF_SESSION_SECRET`                                          | Signs browser session cookies                                          |
+| `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_HOST` | Prompt loading, tracing, and feedback                                  |
+| `OPENAI_API_KEY`, `OPENAI_API_BASE`                           | Chat, embedding, and reranking API access                              |
+| `OPENAI_CHAT_MODEL`, `OPENAI_EMBEDDING_MODEL`                 | Runtime model selection                                                |
+| `QDRANT_URL`                                                  | Vector database endpoint; Compose overrides it to `http://qdrant:6333` |
 
 Use `QDRANT_READONLY_API_KEY` for the core when the platform provides a read-only credential. The indexer needs `QDRANT_API_KEY` with collection and point write permissions.
 
@@ -109,11 +109,11 @@ The development URL is normally `http://localhost:5173`. Validate the production
 
 ## Common failures
 
-| Symptom | Likely cause |
-| --- | --- |
-| Backend exits while importing | A required session or Langfuse variable is absent |
+| Symptom                            | Likely cause                                                                                            |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Backend exits while importing      | A required session or Langfuse variable is absent                                                       |
 | Backend starts but retrieval fails | Qdrant collections are empty, credentials are invalid, or vector configuration differs from the indexer |
-| Only a placeholder page appears | The frontend was not built with `npm run buildlocal` |
-| Indexer exits with status 2 | `QDRANT_URL` or `QDRANT_API_KEY` is missing |
-| Indexer stops after collection | Fewer than `DLF_INDEXER_MIN_ARTICLES` service articles were returned |
-| Browser blocks calls | The origin is not included in comma-separated `DLF_ALLOWED_ORIGINS` |
+| Only a placeholder page appears    | The frontend was not built with `npm run buildlocal`                                                    |
+| Indexer exits with status 2        | `QDRANT_URL` or `QDRANT_API_KEY` is missing                                                             |
+| Indexer stops after collection     | Fewer than `DLF_INDEXER_MIN_ARTICLES` service articles were returned                                    |
+| Browser blocks calls               | The origin is not included in comma-separated `DLF_ALLOWED_ORIGINS`                                     |

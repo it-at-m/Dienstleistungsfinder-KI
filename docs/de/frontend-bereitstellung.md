@@ -36,13 +36,13 @@ Die Komponente verwendet Shadow DOM über den Custom-Element-Build von Vue. Sie 
 
 ## Build-Modi
 
-| Befehl in `core/frontend` | Ergebnis |
-| --- | --- |
-| `npm run dev` | Vite-Entwicklungsserver auf Port 8082 |
-| `npm run build` | Produktives Web-Component-Bundle in `dist/` |
-| `npm run buildlocal` | Build und Kopie der Dateien nach `core/backend/static/` |
-| `npm run lint` | ESLint- und Prettier-Prüfungen |
-| `npm run test:unit` | Vitest-Testsuite |
+| Befehl in `core/frontend` | Ergebnis                                                |
+| ------------------------- | ------------------------------------------------------- |
+| `npm run dev`             | Vite-Entwicklungsserver auf Port 8082                   |
+| `npm run build`           | Produktives Web-Component-Bundle in `dist/`             |
+| `npm run buildlocal`      | Build und Kopie der Dateien nach `core/backend/static/` |
+| `npm run lint`            | ESLint- und Prettier-Prüfungen                          |
+| `npm run test:unit`       | Vitest-Testsuite                                        |
 
 Der Post-Build-Prozess erzeugt `loader.js` mit dem tatsächlichen gehashten JavaScript-Dateinamen. Einbettende Seiten müssen den Vite-Asset-Hash daher nicht kennen.
 
@@ -59,11 +59,11 @@ Der Indexer verwendet ein eigenes minimales UBI-Image und läuft ebenfalls als U
 
 `compose.yaml` definiert drei Services:
 
-| Service | Port | Persistenz | Startverhalten |
-| --- | --- | --- | --- |
-| `qdrant` | 6333 | Named Volume `qdrant-data` | Normal |
-| `core` | 8080 | Zustandslos | Normal; abhängig von Qdrant |
-| `indexer` | keiner | Schreibt nach Qdrant | Nur mit Profil `indexer` |
+| Service   | Port   | Persistenz                 | Startverhalten              |
+| --------- | ------ | -------------------------- | --------------------------- |
+| `qdrant`  | 6333   | Named Volume `qdrant-data` | Normal                      |
+| `core`    | 8080   | Zustandslos                | Normal; abhängig von Qdrant |
+| `indexer` | keiner | Schreibt nach Qdrant       | Nur mit Profil `indexer`    |
 
 Proxy-Variablen werden als Build-Argumente akzeptiert. Zur Laufzeit enthält `NO_PROXY` Qdrant und localhost.
 
@@ -71,9 +71,9 @@ Proxy-Variablen werden als Build-Argumente akzeptiert. Zur Laufzeit enthält `NO
 
 Core-CI prüft das Python-Backend, lintet und baut das Frontend und baut den kombinierten Container. Indexer-CI führt Ruff, pytest und einen Image-Build aus. Beide Anwendungen werden unabhängig über semantische Versions-Tags veröffentlicht:
 
-| Git-Tag | Veröffentlichtes Image |
-| --- | --- |
-| `core-vX.Y.Z` | `ghcr.io/it-at-m/dienstleistungsfinder-ki-core:X.Y.Z` |
+| Git-Tag          | Veröffentlichtes Image                                   |
+| ---------------- | -------------------------------------------------------- |
+| `core-vX.Y.Z`    | `ghcr.io/it-at-m/dienstleistungsfinder-ki-core:X.Y.Z`    |
 | `indexer-vX.Y.Z` | `ghcr.io/it-at-m/dienstleistungsfinder-ki-indexer:X.Y.Z` |
 
 Release-Workflows veröffentlichen außerdem `sha-<commit>`-Tags, Software Bills of Materials und Provenance-Attestierungen. Deployments sollten eine geprüfte semantische Version und einen unveränderlichen Digest statt `latest` festschreiben.

@@ -22,9 +22,15 @@
   background: var(--vp-c-bg-soft);
 }
 
-.dark-only { display: none; }
-.dark .light-only { display: none; }
-.dark .dark-only { display: block; }
+.dark-only {
+  display: none;
+}
+.dark .light-only {
+  display: none;
+}
+.dark .dark-only {
+  display: block;
+}
 
 .VPHome .VPImage.image-src {
   max-width: 320px;

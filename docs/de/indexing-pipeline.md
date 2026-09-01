@@ -15,10 +15,10 @@ Vor dem Abruf externer Inhalte verlangt der Prozess `QDRANT_URL` und `QDRANT_API
 
 `VDB_COLLECTIONS` wählt die registrierten Builder aus; Standard ist `service,info`.
 
-| Collection | Quelle | Verarbeitung |
-| --- | --- | --- |
-| `service` | Münchner Dienstleistungs-APIs | IDs sammeln, Detailartikel laden, validieren und strukturierte Felder normalisieren |
-| `info` | Magnolia-Such-API | Informationsseiten abrufen und direkt in LangChain-Dokumente umwandeln |
+| Collection | Quelle                        | Verarbeitung                                                                        |
+| ---------- | ----------------------------- | ----------------------------------------------------------------------------------- |
+| `service`  | Münchner Dienstleistungs-APIs | IDs sammeln, Detailartikel laden, validieren und strukturierte Felder normalisieren |
+| `info`     | Magnolia-Such-API             | Informationsseiten abrufen und direkt in LangChain-Dokumente umwandeln              |
 
 Der Service-Builder erzwingt `DLF_INDEXER_MIN_ARTICLES` mit dem Standardwert `800`. Diese Sicherung verhindert, dass eine intakte Collection durch eine offensichtlich unvollständige Antwort des Quellsystems ersetzt wird.
 
@@ -51,16 +51,16 @@ Sind `ETRACKER_URL_BASE` und `ETRACKER_TOKEN` gesetzt, verknüpft die letzte Stu
 
 ## Wesentliche Konfiguration
 
-| Variable | Standard | Bedeutung |
-| --- | --- | --- |
-| `VDB_COLLECTIONS` | `service,info` | Builder und Ziel-Collections |
-| `OPENAI_EMBEDDING_MODEL` | keiner | Erforderliches dichtes Embedding-Modell |
-| `EMB_SPARSE_MODEL` | `Qdrant/bm25` | Sparse-Embedding-Modell |
-| `VDB_DENSE_VECTOR_NAME` | `dense` | Name des dichten Vektors in Qdrant |
-| `VDB_SPARSE_VECTOR_NAME` | `sparse` | Name des Sparse-Vektors in Qdrant |
-| `VDB_BATCH_SIZE` | `25` | Dokumente pro Upsert-Batch |
-| `VDB_MAX_SNAPSHOTS` | `10` | Aufbewahrte Snapshots je Collection |
-| `DLF_INDEXER_MIN_ARTICLES` | `800` | Mindestanzahl akzeptierter Dienstleistungsartikel |
+| Variable                   | Standard       | Bedeutung                                         |
+| -------------------------- | -------------- | ------------------------------------------------- |
+| `VDB_COLLECTIONS`          | `service,info` | Builder und Ziel-Collections                      |
+| `OPENAI_EMBEDDING_MODEL`   | keiner         | Erforderliches dichtes Embedding-Modell           |
+| `EMB_SPARSE_MODEL`         | `Qdrant/bm25`  | Sparse-Embedding-Modell                           |
+| `VDB_DENSE_VECTOR_NAME`    | `dense`        | Name des dichten Vektors in Qdrant                |
+| `VDB_SPARSE_VECTOR_NAME`   | `sparse`       | Name des Sparse-Vektors in Qdrant                 |
+| `VDB_BATCH_SIZE`           | `25`           | Dokumente pro Upsert-Batch                        |
+| `VDB_MAX_SNAPSHOTS`        | `10`           | Aufbewahrte Snapshots je Collection               |
+| `DLF_INDEXER_MIN_ARTICLES` | `800`          | Mindestanzahl akzeptierter Dienstleistungsartikel |
 
 ## Fehlerverhalten und Wiederherstellung
 
